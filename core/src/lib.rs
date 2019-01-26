@@ -24,11 +24,10 @@
 //! engine or the object must be carefully deallocated using the object's `free`  method.
 //!
 
-
-#[doc(hidden)]
-pub extern crate libc;
 #[doc(hidden)]
 pub extern crate gdnative_sys as sys;
+#[doc(hidden)]
+pub extern crate libc;
 #[macro_use]
 extern crate bitflags;
 
@@ -37,51 +36,51 @@ pub extern crate gdnative_geom as geom;
 mod macros;
 #[macro_use]
 mod class;
-mod free_on_drop;
-mod internal;
+mod byte_array;
 mod color;
+mod color_array;
+mod dictionary;
+mod float32_array;
+mod free_on_drop;
+mod generated;
+pub mod init;
+mod int32_array;
+mod internal;
+mod node_path;
+#[doc(hidden)]
+pub mod object;
+mod rid;
+mod string;
+mod string_array;
 mod variant;
 mod variant_array;
-mod dictionary;
-mod rid;
-mod generated;
-mod node_path;
-mod string;
-mod byte_array;
-mod int32_array;
-mod float32_array;
-mod string_array;
 mod vector2;
 mod vector2_array;
 mod vector3;
 mod vector3_array;
-mod color_array;
-pub mod init;
-#[doc(hidden)]
-pub mod object;
 
-pub use internal::*;
+pub use byte_array::*;
 pub use class::*;
+pub use color::*;
+pub use color_array::*;
+pub use dictionary::*;
+pub use float32_array::*;
 pub use free_on_drop::*;
+pub use generated::*;
+pub use geom::*;
+pub use int32_array::*;
+pub use internal::*;
+pub use node_path::*;
+pub use object::GodotObject;
+pub use rid::*;
+pub use string::*;
+pub use string_array::*;
 pub use variant::*;
 pub use variant_array::*;
-pub use dictionary::*;
-pub use geom::*;
-pub use color::*;
-pub use rid::*;
-pub use node_path::*;
-pub use generated::*;
-pub use string::*;
-pub use byte_array::*;
-pub use int32_array::*;
-pub use float32_array::*;
-pub use string_array::*;
 pub use vector2::*;
 pub use vector2_array::*;
 pub use vector3::*;
 pub use vector3_array::*;
-pub use color_array::*;
-pub use object::GodotObject;
 
 use std::mem;
 
@@ -94,7 +93,7 @@ pub fn get_api() -> &'static GodotApi {
 }
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
-#[repr(u32)]
+#[repr(i32)]
 pub enum GodotError {
     Failed = sys::godot_error_GODOT_FAILED,
     Unavailable = sys::godot_error_GODOT_ERR_UNAVAILABLE,
@@ -147,7 +146,7 @@ pub enum GodotError {
 }
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
-#[repr(u32)]
+#[repr(i32)]
 pub enum Vector3Axis {
     X = sys::godot_vector3_axis_GODOT_VECTOR3_AXIS_X,
     Y = sys::godot_vector3_axis_GODOT_VECTOR3_AXIS_Y,
